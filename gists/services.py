@@ -14,8 +14,8 @@ class GithubServices:
         request_url = f"{self.user_gists_base_path}/{user}/gists"
         return self.make_request(request_url)
 
-    def make_gist_forks_request(self, gist_id):
-        requests_url = f"{self.gist_forks_base_path}/{gist_id}/forks"
+    def make_gist_forks_request(self, gist_id, page=1):
+        requests_url = f"{self.gist_forks_base_path}/{gist_id}/forks?page={page}"
         return self.make_request(requests_url)
 
 
@@ -35,17 +35,38 @@ def get_gists_for_user(github_user):
     return status, user_gists_jsons
 
 
-def get_latest_forks_for_gist(gist_id, fork_count):
+def get_forks_for_given_page(gist_id, page):
     status = -1
     gist_forks_json = []
-    gist_forks = githubServices.make_gist_forks_request(gist_id)
+    gist_forks = githubServices.make_gist_forks_request(gist_id, page)
     if gist_forks.ok:
         try:
             gist_forks_json = gist_forks.json()
-            gist_forks_json = gist_forks_json[-fork_count:]  # Get the latest forks
             status = 0
         except requests.exceptions.JSONDecodeError:
             print("Failed decoding fork json")
+    return status, gist_forks, gist_forks_json
+
+
+def get_latest_forks_for_gist(gist_id, fork_count):
+    status = -1
+    gist_forks_json = []
+    previous_gist_forks_json = []
+    status, gist_forks, gist_forks_json = get_forks_for_given_page(gist_id, fork_count)
+    if status == 0:
+        link = gist_forks.links
+        if link:
+            last_page_url = link.get("last", {}).get("url", "")
+            page_nb_index = last_page_url.rfind("=") + 1
+            last_page = int(last_page_url[page_nb_index:])
+
+            # Get the newest forks --> from the last page
+            status, _, gist_forks_json = get_forks_for_given_page(gist_id, last_page)
+            if status == 0 and len(gist_forks_json) < 3 and last_page != 1:
+                status, _, previous_gist_forks_json = get_forks_for_given_page(gist_id, last_page-1)
+    if status == 0:
+        previous_gist_forks_json.extend(gist_forks_json)
+        gist_forks_json = previous_gist_forks_json[-3:]
     return status, gist_forks_json
 
 
