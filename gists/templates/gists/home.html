@@ -23,11 +23,17 @@
                         {% endfor %}
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
-                    {% for tag in gist.file_tags %}
-                        <div>
-                            <button type="button" class="btn btn-outline-success mb-2">{{tag}}</button>
-                        </div>
-                    {% endfor %}
+                        {% for tag in gist.file_tags %}
+                            <div>
+                                <form method="POST" action="{%url "filtered-gists" %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="selected_tag" value="{{tag}}">
+                                    <input type="hidden" name="gist_file_owner" value="{{gist_owner}}">
+                                    <input type="hidden" name="gist_file_owner_avatar" value="{{gist_owner_avatar}}">
+                                    <button type="submit" class="btn btn-outline-success mb-2">{{tag}}</button>
+                                </form>
+                            </div>
+                        {% endfor %}
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
                         <form method="POST" action="{% url "display-gist-latest-forks" %}">

@@ -27,6 +27,7 @@ def homepage(request):
                 "gist_id": user_gist.get("id", ""),
             }
             gists.append(crt_gist)
+        request.session["gists"] = gists  # Set this so that we can filter without requesting the data again
 
         gists_count = len(user_gists_jsons)
         if gists_count:
@@ -78,3 +79,23 @@ def display_latest_forks_for_gist(request):
             "latest_forks_count": len(latest_forks)
         }
     return render(request, "gists/display_latest_forks.html", context=context)
+
+
+def display_filtered_gists(request):
+    context = {}
+    if request.method == "POST":
+        selected_tag = request.POST.get("selected_tag", "")
+        gist_file_owner = request.POST.get("gist_file_owner", "")
+        gist_file_owner_avatar = request.POST.get("gist_file_owner_avatar", "")
+
+        gists = request.session["gists"]
+        filtered_gists = []
+        for gist in gists:
+            if selected_tag in gist.get("file_tags", []):
+                filtered_gists.append(gist)
+        context = {
+            "gist_owner": gist_file_owner,
+            "gist_owner_avatar": gist_file_owner_avatar,
+            "gists": filtered_gists
+        }
+    return render(request, "gists/home.html", context=context)
