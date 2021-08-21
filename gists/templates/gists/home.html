@@ -1,7 +1,7 @@
 {% extends "gists/base.html" %}
 {% block specific_content %}
 
-    <form class="d-flex" method="POST">
+    <form class="d-flex" method="POST" action="{% url "gist-app-home" %}">
         {% csrf_token %}
         <input class="form-control me-2" type="search" placeholder="Search" name="github_user">
         <button class="btn btn-success" type="submit">Search</button>
@@ -22,7 +22,14 @@
                     <td style="text-align: center; vertical-align: middle;">
                     {% for file in gist.files %}
                         <div>
-                            <a class="btn btn-link" href="{{file.raw_url}}">{{file.filename}}</a>
+                            <form method="POST" action="{% url "display-gist-file-content" %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="gist_file_name" value="{{file.filename}}">
+                                <input type="hidden" name="gist_file_raw_url" value="{{file.raw_url}}">
+                                <input type="hidden" name="gist_file_owner" value="{{gist_owner}}">
+                                <input type="hidden" name="gist_file_owner_avatar" value="{{gist_owner_avatar}}">
+                                <button class="btn btn-link" type="submit">{{file.filename}}</button>
+                            </form>
                         </div>
                     {% endfor %}
                     </td>
@@ -40,9 +47,6 @@
                                     <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
                                     <h5>{{fork_info.fork_owner}}</h5>
                                 </div>
-<!--                                <div style="display: inline-block; text-align: center;">-->
-<!--                                    <h5>{{fork_info.fork_owner}}</h5>-->
-<!--                                </div>-->
                             </div>
                         {% endfor %}
                     </td>

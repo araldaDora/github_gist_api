@@ -1,0 +1,23 @@
+{% extends "gists/base.html" %}
+{% block specific_content %}
+    <form class="d-flex" method="POST" action="{% url "gist-app-home" %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Search" name="github_user">
+        <button class="btn btn-success" type="submit">Search</button>
+    </form>
+    <br><br>
+
+    <h2 style="text-align: center; mb-2">{{gist_owner}} - {{gist_file_name}}</h2>
+    <div style="text-align: center;">
+        <img class="rounded-circle" style=" height: 110px; width: 110px" src="{{gist_owner_avatar}}">
+    </div>
+    <br><br>
+
+    <div style="text-align: left">
+        <article>
+            <pre>{{gist_file_contents}}</pre>
+        </article>
+    </div>
+
+
+{% endblock specific_content %}

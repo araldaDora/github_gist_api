@@ -49,6 +49,13 @@ def get_latest_forks_for_gist(gist_id, fork_count):
     return status, gist_forks_json
 
 
+def get_gist_file_contents(gist_file_raw_url):
+    gist_file = githubServices.make_request(gist_file_raw_url)
+    if gist_file.ok:
+        return gist_file.text
+    return "Error retrieving gist file"
+
+
 def get_gist_information(gist):
     tags = set()
     files = []
