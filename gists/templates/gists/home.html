@@ -1,7 +1,7 @@
 {% extends "gists/base.html" %}
 {% block specific_content %}
 
-    {% include "gists/page_header.html" with should_display=gists %}
+    {% include "gists/page_header.html" with should_display=gists is_gist_file_content=0 %}
 
     {% if gists %}
         <table class="table">

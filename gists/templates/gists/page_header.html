@@ -6,7 +6,11 @@
 <br><br>
 
 {% if should_display %}
-    <h2 style="text-align: center; mb-2">{{gist_owner}} - {{gist_file_name}}</h2>
+    {% if is_gist_file_content == 1 %}
+        <h2 style="text-align: center; mb-2">{{gist_owner}} - {{gist_file_name}}</h2>
+    {% else %}
+        <h2 style="text-align: center; mb-2">{{gist_owner}}'s Gists</h2>
+    {% endif %}
     <div style="text-align: center;">
         <img class="rounded-circle" style=" height: 110px; width: 110px" src="{{gist_owner_avatar}}">
     </div>
