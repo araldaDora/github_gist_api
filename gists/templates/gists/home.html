@@ -1,8 +1,9 @@
 {% extends "gists/base.html" %}
 {% block specific_content %}
 
-    <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="d-flex" method="POST">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Search" name="github_user">
         <button class="btn btn-success" type="submit">Search</button>
     </form>
 
