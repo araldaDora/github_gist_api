@@ -15,3 +15,20 @@ class GithubServices:
 
 
 githubServices = GithubServices()
+
+
+def get_gist_information(gist_files):
+    tags = set()
+    files = []
+    for f in gist_files:
+        crt_file = {
+            "filename": f.get("filename", ""),
+            "raw_url": f.get("raw_url", "")
+        }
+        file_type = f.get("type", "")
+        tags.add(str(file_type))
+        files.append(crt_file)
+
+    tags = list(tags)
+    tags.sort(key=len)
+    return files, tags

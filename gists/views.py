@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.contrib import messages
-from .services import githubServices
+from .services import githubServices, get_gist_information
 
 
 def homepage(request):
@@ -21,8 +21,11 @@ def homepage(request):
 
             gists = []
             for user_gist in user_gists_jsons:
+                files = [file_json_info for _, file_json_info in user_gist.get("files", {}).items()]
+                files, tags = get_gist_information(files)
                 crt_gist = {
-                    "files": [file_data for _, file_data in user_gist.get("files", {}).items()],
+                    "files": files,
+                    "file_tags": tags,
                     "description": user_gist.get("description", "")
                 }
                 gists.append(crt_gist)

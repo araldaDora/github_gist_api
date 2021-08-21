@@ -26,6 +26,13 @@
                         </div>
                     {% endfor %}
                     </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                    {% for tag in gist.file_tags %}
+                        <div>
+                            <button type="button" class="btn btn-outline-success mb-2">{{tag}}</button>
+                        </div>
+                    {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
