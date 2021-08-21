@@ -9,19 +9,24 @@
     <br><br>
 
     {% if gists %}
+        <h2 style="text-align: center">{{gist_owner}}'s Gists</h2>
+        <div style="text-align: center;">
+            <img class="rounded-circle" style=" height: 110px; width: 110px" src="{{gist_owner_avatar}}">
+        </div>
+        <br><br>
+
         <table class="table">
             {% for gist in gists %}
-                    <tr>
-                        <td>
-                            <h1>{{gist.owner_login}}</h1>
-                            <img class="rounded-circle" style="height: 110px; width: 110px" src="{{gist.owner_avatar}}">
-                        </td>
-                        {% for file in gist.files %}
-                                <td>
-                                    <a class="btn btn-link" href="{{file.raw_url}}">{{file.filename}}</a>
-                                </td>
-                        {% endfor %}
-                    </tr>
+                <tr>
+                    <td style="text-align: center; vertical-align: middle;"><h5>{{gist.description}}</h5></td>
+                    <td style="text-align: center; vertical-align: middle;">
+                    {% for file in gist.files %}
+                        <div>
+                            <a class="btn btn-link" href="{{file.raw_url}}">{{file.filename}}</a>
+                        </div>
+                    {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
         </table>
 

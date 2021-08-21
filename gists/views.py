@@ -23,11 +23,13 @@ def homepage(request):
             for user_gist in user_gists_jsons:
                 crt_gist = {
                     "files": [file_data for _, file_data in user_gist.get("files", {}).items()],
-                    "owner_login": user_gist.get("owner", {}).get("login", ""),
-                    "owner_avatar": user_gist.get("owner", {}).get("avatar_url", "")
+                    "description": user_gist.get("description", "")
                 }
                 gists.append(crt_gist)
+            gists_count = len(user_gists_jsons)
             context = {
+                "gist_owner": user_gists_jsons[0].get("owner", {}).get("login", "") if gists_count else "",
+                "gist_owner_avatar": user_gists_jsons[0].get("owner", {}).get("avatar_url", ""),
                 "gists": gists
             }
             break
