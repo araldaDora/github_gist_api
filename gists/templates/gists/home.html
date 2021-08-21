@@ -6,5 +6,25 @@
         <input class="form-control me-2" type="search" placeholder="Search" name="github_user">
         <button class="btn btn-success" type="submit">Search</button>
     </form>
+    <br><br>
+
+    {% if gists %}
+        <table class="table">
+            {% for gist in gists %}
+                    <tr>
+                        <td>
+                            <h1>{{gist.owner_login}}</h1>
+                            <img class="rounded-circle" style="height: 110px; width: 110px" src="{{gist.owner_avatar}}">
+                        </td>
+                        {% for file in gist.files %}
+                                <td>
+                                    <a class="btn btn-link" href="{{file.raw_url}}">{{file.filename}}</a>
+                                </td>
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+        </table>
+
+    {% endif %}
 
 {% endblock specific_content %}
