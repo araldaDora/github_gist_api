@@ -24,15 +24,8 @@ def homepage(request):
                 "files": files,
                 "file_tags": tags,
                 "description": user_gist.get("description", ""),
-                "forks": []
+                "gist_id": user_gist.get("id", ""),
             }
-            gist_id = user_gist.get("id", "")
-            status, gist_forks_json = get_latest_forks_for_gist(gist_id, 3)
-            if status != 0:
-                gist_forks_json = []
-                messages.error(request, f"Failed retrieving forks for gist {gist_id} of user {github_user}",
-                               extra_tags="danger")
-            crt_gist["forks"] = get_gist_forks_information(gist_forks_json)
             gists.append(crt_gist)
 
         gists_count = len(user_gists_jsons)
@@ -62,3 +55,26 @@ def display_gist_file_content(request):
             "gist_file_contents": gist_file_contents
         }
     return render(request, "gists/display_gist_file.html", context=context)
+
+
+def display_latest_forks_for_gist(request):
+    context = {}
+    if request.method == "POST":
+        gist_id = request.POST.get("gist_id", "")
+        gist_file_owner = request.POST.get("gist_file_owner", "")
+        gist_file_owner_avatar = request.POST.get("gist_file_owner_avatar", "")
+
+        status, gist_forks_json = get_latest_forks_for_gist(gist_id, 3)
+        if status != 0:
+            gist_forks_json = []
+            messages.error(request, f"Failed retrieving forks for gist {gist_id} of user {gist_file_owner}",
+                           extra_tags="danger")
+        latest_forks = get_gist_forks_information(gist_forks_json)
+        context = {
+            "gist_id": gist_id,
+            "gist_owner": gist_file_owner,
+            "gist_owner_avatar": gist_file_owner_avatar,
+            "gist_latest_forks": latest_forks,
+            "latest_forks_count": len(latest_forks)
+        }
+    return render(request, "gists/display_latest_forks.html", context=context)

@@ -1,0 +1,19 @@
+{% extends "gists/base.html" %}
+{% block specific_content %}
+
+    {% include "gists/page_header.html" with should_display=1 is_gist_file_content=0 %}
+
+    {% if latest_forks_count == 0 %}
+        <h3 style="text-align: center">This gist has no forks!</h3>
+    {% else %}
+            <h3 class="mb-3" style="text-align: center">Latest forks for gist {{gist_id}}:</h3>
+            {% for fork_info in gist_latest_forks %}
+                <div class="parent" style="text-align: center;">
+                    <div class="mb-5" style="display: inline-block; text-align: center;">
+                        <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
+                        <h5>{{fork_info.fork_owner}}</h5>
+                    </div>
+                </div>
+            {% endfor %}
+    {% endif %}
+{% endblock specific_content %}

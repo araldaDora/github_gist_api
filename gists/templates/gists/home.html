@@ -9,18 +9,18 @@
                 <tr>
                     <td style="text-align: center; vertical-align: middle;"><h5>{{gist.description}}</h5></td>
                     <td style="text-align: center; vertical-align: middle;">
-                    {% for file in gist.files %}
-                        <div>
-                            <form method="POST" action="{% url "display-gist-file-content" %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="gist_file_name" value="{{file.filename}}">
-                                <input type="hidden" name="gist_file_raw_url" value="{{file.raw_url}}">
-                                <input type="hidden" name="gist_file_owner" value="{{gist_owner}}">
-                                <input type="hidden" name="gist_file_owner_avatar" value="{{gist_owner_avatar}}">
-                                <button class="btn btn-link" type="submit">{{file.filename}}</button>
-                            </form>
-                        </div>
-                    {% endfor %}
+                        {% for file in gist.files %}
+                            <div>
+                                <form method="POST" action="{% url "display-gist-file-content" %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="gist_file_name" value="{{file.filename}}">
+                                    <input type="hidden" name="gist_file_raw_url" value="{{file.raw_url}}">
+                                    <input type="hidden" name="gist_file_owner" value="{{gist_owner}}">
+                                    <input type="hidden" name="gist_file_owner_avatar" value="{{gist_owner_avatar}}">
+                                    <button class="btn btn-link" type="submit">{{file.filename}}</button>
+                                </form>
+                            </div>
+                        {% endfor %}
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
                     {% for tag in gist.file_tags %}
@@ -30,19 +30,16 @@
                     {% endfor %}
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
-                        {% for fork_info in gist.forks %}
-                            <div class="parent" style="text-align: center;">
-                                <div style="display: inline-block; text-align: center;">
-                                    <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
-                                    <h5>{{fork_info.fork_owner}}</h5>
-                                </div>
-                            </div>
-                        {% endfor %}
+                        <form method="POST" action="{% url "display-gist-latest-forks" %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="gist_file_owner" value="{{gist_owner}}">
+                            <input type="hidden" name="gist_file_owner_avatar" value="{{gist_owner_avatar}}">
+                            <input type="hidden" name="gist_id" value="{{gist.gist_id}}">
+                            <button class="btn btn-success" type="submit" style="white-space: nowrap">Latest Forks</button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
-
     {% endif %}
-
 {% endblock specific_content %}
