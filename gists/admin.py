@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Gist, Owner, GistFile
 
-# Register your models here.
+admin.site.register(Gist)
+admin.site.register(Owner)
+admin.site.register(GistFile)
