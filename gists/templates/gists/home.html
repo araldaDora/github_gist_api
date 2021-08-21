@@ -33,6 +33,19 @@
                         </div>
                     {% endfor %}
                     </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {% for fork_info in gist.forks %}
+                            <div class="parent" style="text-align: center;">
+                                <div style="display: inline-block; text-align: center;">
+                                    <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
+                                    <h5>{{fork_info.fork_owner}}</h5>
+                                </div>
+<!--                                <div style="display: inline-block; text-align: center;">-->
+<!--                                    <h5>{{fork_info.fork_owner}}</h5>-->
+<!--                                </div>-->
+                            </div>
+                        {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
