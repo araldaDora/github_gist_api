@@ -42,7 +42,6 @@ def homepage(request):
                 "gist_owner_avatar": user_gists_jsons[0].get("owner", {}).get("avatar_url", ""),
                 "gists": gists
             }
-            print(context)
     return render(request, "gists/home.html", context=context)
 
 
