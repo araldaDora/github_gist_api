@@ -4,6 +4,7 @@
 This is a web application created in Python, using Django. It allows users to view public GitHub gists.
 
 <h2>Functionality</h2>
+
 * Allows users to list the public gists of GitHub users by entering their username
 
 * For each gist:
