@@ -9,9 +9,17 @@
             <h3 class="mb-3" style="text-align: center">Latest forks for gist {{gist_id}}:</h3>
             {% for fork_info in gist_latest_forks %}
                 <div class="parent" style="text-align: center;">
-                    <div class="mb-5" style="display: inline-block; text-align: center;">
-                        <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
-                        <h5>{{fork_info.fork_owner}}</h5>
+                    <div class="mb-3" style="display: inline-block; text-align: center;">
+                        <form method="POST" action="{% url "gist-app-home" %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="github_user" value="{{fork_info.fork_owner}}">
+                            <div style="text-align: center">
+                                <img class="rounded-circle mr-2" style=" height: 50px; width: 50px" src="{{fork_info.fork_owner_avatar}}">
+                            </div>
+                            <div style="text-align: center">
+                                <button type="submit" class="btn btn-link"><h5>{{fork_info.fork_owner}}</h5></button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             {% endfor %}
